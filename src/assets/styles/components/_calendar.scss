@@ -1,0 +1,100 @@
+// stylelint-disable selector-class-pattern
+
+.view-selector {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 1.5 * $spacing-abs-large;
+}
+
+.DayPicker * {
+	outline: none;
+}
+
+.calendar-nav {
+	display: flex;
+	align-items: center;
+
+	.month-name {
+		flex: 1;
+		text-align: center;
+	}
+
+	.button-today {
+		width: $input-height;
+	}
+}
+
+.DayPicker-Body {
+	display: grid;
+	grid-template-rows: repeat(6, $input-height);
+}
+
+.DayPicker-Months {
+	line-height: 1;
+}
+
+.DayPicker-Week,
+.DayPicker-WeekdaysRow {
+	display: grid;
+	grid-template-columns: repeat(7, $input-height);
+}
+
+.DayPicker-Day,
+.DayPicker-Weekday {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.DayPicker-WeekdaysRow {
+	height: $input-height;
+}
+
+.DayPicker-Weekday {
+	@include color("text-faded");
+	font-size: 80%;
+}
+
+.DayPicker-Day {
+	margin: 1px;
+	border-radius: 50%;
+	transition: $transition;
+
+	&:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):not(.DayPicker-Day--selected) {
+		&:hover {
+			@include background-color("background-hover");
+		}
+	}
+}
+
+.DayPicker-Day--disabled {
+	@include color("text-disabled");
+}
+
+.DayPicker-Day--hasEntry {
+	font-weight: $font-weight-bold;
+
+	&:not(.DayPicker-Day--selected) {
+		@include color("main");
+	}
+}
+
+.DayPicker-Day--today:not(.DayPicker-Day--outside) {
+	@include border-color("main");
+	border-style: solid;
+	border-width: 2px;
+
+	&:hover {
+		@include border-color("main-hover");
+	}
+}
+
+.DayPicker-Day--selected {
+	@include color("text-button");
+	@include background-color("main");
+	@include box-shadow($shadow-size-outer, "shadow-outer");
+
+	&:hover {
+		@include background-color("main-hover");
+	}
+}

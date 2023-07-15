@@ -1,0 +1,29 @@
+.banner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+
+	svg {
+		margin-right: 8px;
+		line-height: 0;
+	}
+
+	&.banner-error {
+		@include color("error");
+	}
+
+	&.banner-no-results {
+		@include color("text-faded");
+	}
+}
+
+.password-creation-banner,
+.password-prompt-banner {
+	margin-top: $spacing-abs-large;
+}
+
+.password-update-banner {
+	height: 1em;
+	margin-top: $spacing-abs-medium;
+}

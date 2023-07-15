@@ -1,0 +1,51 @@
+.diary {
+	display: flex;
+	align-items: center;
+	height: 100%;
+
+	.sidebar {
+		display: flex;
+		flex-direction: column;
+		width: 7 * $input-height;
+	}
+
+	.editor {
+		flex: 1; // Keep sidebar width constant
+		width: 100%;
+	}
+
+	@media (max-width: $screen-tablet) {
+		flex-direction: column;
+		margin: 0 auto;
+		padding: 2 * $spacing-abs-large;
+		overflow-y: auto;
+
+		.sidebar {
+			flex-shrink: 0;
+			margin: 0 auto $spacing-abs-large;
+		}
+
+		.editor {
+			min-height: 500px;
+		}
+	}
+
+	@media (min-width: $screen-tablet + 1px) {
+		justify-content: center;
+		padding: $spacing-rel-large;
+
+		.sidebar,
+		.editor {
+			height: 100%;
+		}
+
+		.editor {
+			max-width: $editor-max-width;
+			margin-left: $spacing-rel-large;
+		}
+	}
+
+	@media (min-width: $screen-large) {
+		padding: $spacing-rel-medium;
+	}
+}

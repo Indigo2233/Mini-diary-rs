@@ -1,0 +1,21 @@
+fieldset {
+	margin-top: $spacing-abs-medium;
+	border: 0;
+}
+
+legend {
+	font-weight: $font-weight-bold;
+}
+
+.form-group {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-right: -$spacing-abs-small;
+	margin-bottom: -$spacing-abs-small;
+}
+
+.form-group > * {
+	margin-right: $spacing-abs-small;
+	margin-bottom: $spacing-abs-small;
+}

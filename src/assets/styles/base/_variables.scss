@@ -1,0 +1,81 @@
+// Colors
+$themes: (
+	"light": (
+		"background": #e2e2e2,
+		"background-hover": #c5c5c5 /* Same as "background-toolbar" */,
+		"background-button-disabled": #d2d2d2,
+		"background-input": #f9f9f9,
+		"background-input-hover": #d4d4d4,
+		"background-toolbar": #c5c5c5 /* Same as "background-hover" */,
+		"error": #d23939,
+		"main": #4e8bd2,
+		"main-hover": #447ab8,
+		"text": #353535,
+		"text-button": #ffffff,
+		"text-disabled": #b7b7b7,
+		"text-faded": #727272,
+		"text-placeholder": #757575,
+		"scrollbar": rgba(0, 0, 0, 0.2),
+		"scrollbar-hover": rgba(0, 0, 0, 0.3),
+		"shadow-inner": rgba(0, 0, 0, 0.13),
+		"shadow-outer": rgba(0, 0, 0, 0.18),
+	),
+	"dark": (
+		"background": #1f1e21,
+		"background-hover": #3f3f41,
+		"background-button-disabled": #080808,
+		"background-input": #353538,
+		"background-input-hover": #323234,
+		"background-toolbar": #131313,
+		"error": #d23939,
+		"main": #4c81bf,
+		"main-hover": #4371a7,
+		"text": #d0d0d0,
+		"text-button": #ffffff,
+		"text-disabled": #4e4e4e,
+		"text-faded": #a1a1a1,
+		"text-placeholder": #757575,
+		"scrollbar": rgba(0, 0, 0, 0.4),
+		"scrollbar-hover": rgba(0, 0, 0, 0.5),
+		"shadow-inner": rgba(0, 0, 0, 0.2),
+		"shadow-outer": rgba(0, 0, 0, 0.4),
+	),
+) !default;
+
+// Text
+$font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica", "Arial",
+	sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-size-base: 16px;
+$font-size-h1: 150%;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+$line-height: 1.7;
+$paragraph-spacing: 1em;
+
+// Spacing
+$spacing-abs-small: 10px;
+$spacing-abs-medium: 15px;
+$spacing-abs-large: 30px;
+$spacing-rel-small: 2.5vw;
+$spacing-rel-medium: 3.5vw;
+$spacing-rel-large: 6vw;
+
+// Sizes
+$editor-max-width: 860px;
+$header-height: 37px;
+$input-height: 40px;
+$input-width: 210px;
+$scrollbar-padding: 4px;
+$scrollbar-width: 14px;
+
+// Screen sizes (media query breakpoints)
+$screen-tablet: 800px;
+$screen-desktop: 1224px;
+$screen-large: 1824px;
+
+// Other
+$border-radius-button: 10px;
+$border-radius-input: 5px;
+$shadow-size-inner: inset 0.5px 0.5px 1px 1px;
+$shadow-size-outer: 0.5px 0.5px 1px 1px;
+$transition: 0.2s;

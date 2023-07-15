@@ -1,0 +1,14 @@
+.page-centered-outer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+.page-centered-inner {
+	text-align: center;
+}
+
+.page-centered-content {
+	margin-top: $spacing-rel-large;
+}

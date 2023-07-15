@@ -1,0 +1,26 @@
+// stylelint-disable-next-line
+html,
+body,
+#root,
+.theme-dark,
+.theme-light,
+.app {
+	height: 100%;
+}
+
+body {
+	overflow: hidden;
+}
+
+.app {
+	@include background-color("background");
+	position: relative;
+	overflow: auto; // Scrollbar must be here instead of in <body> so it can be styled based on theme
+}
+
+header {
+	position: absolute;
+	width: 100%;
+	height: $header-height;
+	-webkit-app-region: drag;
+}
