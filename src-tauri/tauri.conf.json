@@ -60,12 +60,12 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 700,
         "resizable": true,
         "title": "mini-diary",
-        "width": 1100,
-        "minWidth": 500,
-        "minHeight": 500
+        "width": 1400,
+        "minWidth": 1400,
+        "minHeight": 700
       }
     ]
   }

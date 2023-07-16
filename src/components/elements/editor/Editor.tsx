@@ -3,12 +3,11 @@ import "draft-js/dist/Draft.css";
 import {Moment} from "moment-timezone";
 import React, {useEffect, useState} from "react";
 
-import {Entries, IndexDate} from "../../../types";
 import {toIndexDate, toLocaleWeekday} from "../../../utils/dateFormat";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
-
+import "./styles.css"
 
 const AUTOSAVE_INTERVAL = 500;
 
@@ -49,7 +48,7 @@ export const Editor = (props: Props) => {
     }, [value]);
     const weekdayDate = toLocaleWeekday(date);
     return (
-        <div>
+        <div className="editor">
             <div>{weekdayDate}</div>
             <ReactMde
                 value={value}

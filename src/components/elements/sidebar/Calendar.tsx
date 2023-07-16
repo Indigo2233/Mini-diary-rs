@@ -1,7 +1,8 @@
 import React from "react";
-import {DayPicker} from "react-day-picker";
+import {DateFormatter, DayPicker} from "react-day-picker";
+import {format} from "date-fns";
 import "react-day-picker/dist/style.css";
-
+import "./styles.css"
 export interface StateProps {
     // allowFutureEntries: boolean;
     // dateSelected: Moment;
@@ -14,20 +15,50 @@ export interface DispatchProps {
 }
 
 type Props = StateProps & DispatchProps;
+const seasonEmoji: Record<string, string> = {
+    winter: '⛄️',
+    spring: '🌸',
+    summer: '🌻',
+    autumn: '🍂'
+};
 
+const getSeason = (month: Date): string => {
+    const monthNumber = month.getMonth();
+    if (monthNumber >= 0 && monthNumber < 3) return 'winter';
+    if (monthNumber >= 3 && monthNumber < 6) return 'spring';
+    if (monthNumber >= 6 && monthNumber < 9) return 'summer';
+    else return 'autumn';
+};
+const formatCaption: DateFormatter = (month, options) => {
+    const season = getSeason(month);
+    return (
+        <>
+      <span role="img" aria-label={season}>
+        {seasonEmoji[season]}
+      </span>{' '}
+            {format(month, 'LLLL', {locale: options?.locale})}
+        </>
+    );
+};
 export const Calendar = (props: Props) => {
     const [selected, setSelected] = React.useState<Date>();
 
-    let footer = <p>Please pick a day.</p>;
-    if (selected) {
-        footer = <p>You picked.</p>;
-    }
+    const footer = selected ? (
+        <p>You selected {format(selected, 'PPP')}.</p>
+    ) : (
+        <p>Please pick a day.</p>
+    );
+
     return (
         <DayPicker
             mode="single"
             selected={selected}
             onSelect={setSelected}
             footer={footer}
+            showOutsideDays fixedWeeks
+            // styles={{
+            // }}
+            formatters={{ formatCaption }}
         />
     );
 }

@@ -1,0 +1,15 @@
+.rdp {
+    --rdp-cell-size: 50px;
+}
+.rdp-head_cell {
+    font-size: 1.0em;
+    font-weight: 700;
+    height: var(--rdp-cell-size);
+    padding: 8px;
+    margin-left: 2px;
+}
+.rdp-day {
+    margin-left: 2px;
+    margin-right: 2px;
+
+}

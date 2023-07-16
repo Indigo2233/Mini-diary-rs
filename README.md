@@ -1,7 +1,3 @@
-# Tauri + React + Typescript
+# Mini-diary-rs
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+An under-developed diary software built in **tauri**. The UI is referred to [Mini-diary](https://github.com/samuelmeuli/mini-diary).
