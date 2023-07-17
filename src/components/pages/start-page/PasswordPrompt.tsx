@@ -9,7 +9,7 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
-    decryptFile: (password: string) => void;
+    decryptFile:  (password: string) => Promise<void>;
 }
 
 type Props = StateProps & DispatchProps;
@@ -46,20 +46,20 @@ export default class PasswordPrompt extends PureComponent<Props, State> {
      * Test decrypting the diary file with the provided password. On success, save the password and
      * the decrypted diary entries to the Redux store. Otherwise, throw an error
      */
-    onSubmit(e: FormEvent): void {
+    async onSubmit(e: FormEvent): Promise<void> {
         e.preventDefault();
-        const { decryptFile } = this.props;
-        const { password } = this.state;
+        const {decryptFile} = this.props;
+        const {password} = this.state;
+
+        // Display error if password is incorrect
 
         // Try to decrypt the diary file - this.props.decryptStatus will be updated depending on whether
         // decryption was successful or unsuccessful
-        decryptFile(password);
+        await decryptFile(password);
 
-        // Display error if password is incorrect
         this.setState({
             isSubmitted: true,
         });
-
         // Select entered password if it is incorrect
         // @ts-ignore
         this.input.select();
@@ -68,7 +68,7 @@ export default class PasswordPrompt extends PureComponent<Props, State> {
     render(): ReactNode {
         const { decryptErrorMsg, decryptStatus } = this.props;
         const { isSubmitted, password } = this.state;
-
+        console.log(isSubmitted, decryptStatus);
         return (
             <StartPage>
                 <form className="password-prompt-form" onSubmit={this.onSubmit}>

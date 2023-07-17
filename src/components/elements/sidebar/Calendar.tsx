@@ -1,11 +1,13 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {DateFormatter, DayPicker} from "react-day-picker";
 import {format} from "date-fns";
 import "react-day-picker/dist/style.css";
 import "./styles.css"
+import {Moment} from "moment-timezone";
+
 export interface StateProps {
     // allowFutureEntries: boolean;
-    // dateSelected: Moment;
+    dateSelected: Moment;
     // entries: Entries;
     // firstDayOfWeek: Weekday | null;
 }
@@ -41,8 +43,11 @@ const formatCaption: DateFormatter = (month, options) => {
     );
 };
 export const Calendar = (props: Props) => {
-    const [selected, setSelected] = React.useState<Date>();
-
+    const today = new Date();
+    const [selected, setSelected] = React.useState<Date | undefined>(today);
+    useEffect(() => {
+        setSelected(props.dateSelected.toDate());
+    }, [props.dateSelected])
     const footer = selected ? (
         <p>You selected {format(selected, 'PPP')}.</p>
     ) : (
@@ -52,13 +57,14 @@ export const Calendar = (props: Props) => {
     return (
         <DayPicker
             mode="single"
+            required
             selected={selected}
             onSelect={setSelected}
             footer={footer}
             showOutsideDays fixedWeeks
             // styles={{
             // }}
-            formatters={{ formatCaption }}
+            formatters={{formatCaption}}
         />
     );
 }

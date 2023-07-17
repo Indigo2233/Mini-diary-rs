@@ -1,6 +1,6 @@
-import {XCircle} from "react-feather";
+import {XCircle, Clock} from "react-feather";
 import {Moment} from "moment-timezone";
-import React, {ChangeEvent, PureComponent, ReactNode} from "react";
+import React, {ChangeEvent, PureComponent, ReactNode, useEffect, useState} from "react";
 
 
 import {createDate} from "../../../utils/dateFormat";
@@ -9,7 +9,7 @@ import {SkipForward} from "react-feather";
 
 export interface StateProps {
     dateSelected: Moment;
-    searchKey: string;
+    // searchKey: string;
 }
 
 export interface DispatchProps {
@@ -19,16 +19,16 @@ export interface DispatchProps {
 
 type Props = StateProps & DispatchProps;
 
-interface State {
-    newSearchKey: string;
-}
-
 export const SearchBar = (props: Props) => {
-    var newSearchKey = props.searchKey;
+    const {search, setDateSelected} = props;
+    const [searchKey, setSearchKey] = useState("");
     const {dateSelected} = props;
     const today = createDate();
-    const isToday = dateSelected.isSame(today, "day");
+    const isToday = !dateSelected.isSame(today, "day");
 
+    useEffect(() => {
+        search(searchKey);
+    }, [searchKey])
     // @ts-ignore
     return (
         <div className="view-selector">
@@ -38,28 +38,38 @@ export const SearchBar = (props: Props) => {
                     className="search-input"
                     placeholder={"search…"}
                     spellCheck={false}
-                    value={newSearchKey}
-                    // onChange={this.onChange}
+                    value={searchKey}
+                    onChange={(e) => (setSearchKey(e.target.value))}
                 />
-                {newSearchKey !== "" && (
+                {searchKey !== "" && (
                     <span className="search-input-clear">
 							<button
                                 type="button"
                                 className="button button-invisible"
-                                // onClick={this.clearSearchKey}
+                                onClick={() => setSearchKey("")}
+                                title={"clear"}
                             >
-								<XCircle {...iconProps} title={"clear"}/>
+								<XCircle {...iconProps} />
 							</button>
-						</span>
+                    </span>
                 )}
             </div>
             <button
                 type="button"
                 className="button button-invisible button-today"
-                disabled={isToday}
                 // onClick={onTodaySelection}
+                title={"That year, this today."}
             >
-                <SkipForward {...iconProps} title={"today"}/>
+                <Clock {...iconProps} />
+            </button>
+            <button
+                type="button"
+                className="button button-invisible button-today"
+                disabled={isToday}
+                onClick={(e) => {setDateSelected(createDate())}}
+                title={"today"}
+            >
+                <SkipForward {...iconProps} />
             </button>
         </div>
     );
