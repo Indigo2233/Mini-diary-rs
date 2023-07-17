@@ -4,7 +4,6 @@ export type IndexDate = string;
 
 export interface DiaryEntry {
     dateUpdated: string;
-    title: string;
     text: string;
 }
 

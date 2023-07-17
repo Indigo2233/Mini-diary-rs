@@ -3,7 +3,7 @@ import {DateFormatter, DayPicker} from "react-day-picker";
 import {format} from "date-fns";
 import "react-day-picker/dist/style.css";
 import "./styles.css"
-import {Moment} from "moment-timezone";
+import moment, {Moment} from "moment-timezone";
 
 export interface StateProps {
     // allowFutureEntries: boolean;
@@ -13,7 +13,7 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
-    // setDateSelected: (date: Moment) => void;
+    setDateSelected: (date: Moment) => void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -44,10 +44,14 @@ const formatCaption: DateFormatter = (month, options) => {
 };
 export const Calendar = (props: Props) => {
     const today = new Date();
+    const {setDateSelected} = props;
     const [selected, setSelected] = React.useState<Date | undefined>(today);
     useEffect(() => {
         setSelected(props.dateSelected.toDate());
     }, [props.dateSelected])
+    useEffect(() => {
+        setDateSelected(moment(selected));
+    }, [selected])
     const footer = selected ? (
         <p>You selected {format(selected, 'PPP')}.</p>
     ) : (
@@ -62,8 +66,6 @@ export const Calendar = (props: Props) => {
             onSelect={setSelected}
             footer={footer}
             showOutsideDays fixedWeeks
-            // styles={{
-            // }}
             formatters={{formatCaption}}
         />
     );

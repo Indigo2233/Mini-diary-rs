@@ -3,12 +3,13 @@ import "draft-js/dist/Draft.css";
 import {Moment} from "moment-timezone";
 import React, {useEffect, useState} from "react";
 
-import {toIndexDate, toLocaleWeekday} from "../../../utils/dateFormat";
+import {fromIndexDate, toIndexDate, toLocaleWeekday} from "../../../utils/dateFormat";
 import ReactMde from "react-mde";
 // @ts-ignore
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import "./styles.css"
+import {Entries} from "../../../types";
 
 const AUTOSAVE_INTERVAL = 500;
 
@@ -20,7 +21,7 @@ export interface StateProps {
     enableSpellcheck: boolean;
     hideTitles: boolean;
     dateSelected: Moment;
-    // entries: Entries;
+    entries: Entries;
 }
 
 export interface DispatchProps {
@@ -43,9 +44,10 @@ const converter = new Showdown.Converter({
 
 
 export const Editor = (props: Props) => {
-    const {dateSelected, contentChange} = props;
+    const {dateSelected, entries, contentChange} = props;
+    const et = entries[toIndexDate(dateSelected)];
     const [date, setDate] = useState(dateSelected);
-    const [value, setValue] = useState("**Hello world!!!**");
+    const [value, setValue] = useState(et ? et.text : "");
     const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
     const handleKeyDown = (event: React.KeyboardEvent) => {
         if (event.key === "s" && (event.ctrlKey || event.metaKey)) {
@@ -57,10 +59,15 @@ export const Editor = (props: Props) => {
             console.log("should save code");
         }
     };
+    useEffect(() => {
+        const et = entries[toIndexDate(dateSelected)];
+        setValue(et ? et.text : "");
+    }, [props.dateSelected]);
 
     useEffect(() => {
         contentChange(value);
     }, [value]);
+
     const weekdayDate = toLocaleWeekday(date);
     return (
         <div className="editor" onKeyDown={handleKeyDown}>

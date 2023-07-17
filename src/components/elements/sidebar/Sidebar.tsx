@@ -10,13 +10,16 @@ import moment, {Moment} from "moment-timezone";
 
 
 export interface StateProps {
-    searchKey: string;
 }
 
-type Props = StateProps;
+export interface DispatchProps {
+    setDiaryDate: (date: Moment) => void;
+}
+type Props = StateProps & DispatchProps;
 
 
 export const Sidebar = (props: Props) => {
+    const {setDiaryDate} = props;
     const [date, setDate] = useState(createDate());
     const [searchKey, setSearchKey] = useState("")
     const search = (key: string) => {
@@ -25,11 +28,10 @@ export const Sidebar = (props: Props) => {
     const setDateSelected = (date: Moment) => {
         setDate(date);
     }
-
     return (
         <div className="sidebar">
             <SearchBar  dateSelected={date} search={search} setDateSelected={setDateSelected}/>
-            {searchKey === "" ? <Calendar dateSelected={date} /> : <SearchResults  dateSelected={date}/>}
+            {searchKey === "" ? <Calendar setDateSelected={setDiaryDate} dateSelected={date} /> : <SearchResults  dateSelected={date}/>}
         </div>
     );
 }

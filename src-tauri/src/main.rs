@@ -5,6 +5,7 @@ windows_subsystem = "windows"
 
 use std::io::{Read, Write};
 use bcrypt::{hash, verify};
+use serde::{Deserialize, Serialize};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 // #[tauri::command]
@@ -36,12 +37,26 @@ fn check_passwd(password: String) -> bool {
     verify(password, &saved_passwd).unwrap()
 }
 
+#[derive(Serialize, Deserialize)]
+struct DiaryEntry(String, String);
+
+type IndexDate = String;
+
+#[tauri::command]
+fn get_entries() -> Vec<(IndexDate, DiaryEntry)> {
+    let mut res = vec![];
+    res.push(("2023-07-15".to_string(),
+              DiaryEntry("2023-07-15".to_string(), "What a nice girl!".to_string())));
+    res
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             test_file_exists,
             create_encrypted_file,
-            check_passwd
+            check_passwd,
+            get_entries
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -6,6 +6,7 @@ import 'react-day-picker/dist/style.css';
 import Diary from "./components/pages/diary/Diary";
 import PasswordPrompt from "./components/pages/start-page/PasswordPrompt";
 import {invoke} from "@tauri-apps/api/tauri";
+import {DiaryEntry, Entries, IndexDate} from "./types";
 
 type Props = {}
 
@@ -17,17 +18,27 @@ async function createEncryptedFile(password: string) {
 
 async function testFileExists() {
     const exist = await invoke('test_file_exists');
-    console.log(exist);
 }
 
 export const App = (props: Props) => {
     const [selected, setSelected] = React.useState<Date>();
     const [password, setPassword] = React.useState("");
     const [correct, setCorrect] = React.useState(false);
+    const [entries, setEntries] = React.useState<Entries>({});
     const checkPasswd = async (password: string) => {
         if (await invoke('check_passwd', {password: password})) {
             setPassword(password);
             setCorrect(true);
+
+            const ets: [[string, [string, string]]] = await invoke('get_entries');
+            let entries: Entries = {};
+            for (let i = 0; i < ets.length; i++) {
+                entries[ets[i][0]] = {
+                    dateUpdated: ets[i][1][0],
+                    text: ets[i][1][1]
+                };
+            }
+            setEntries(entries);
         }
     }
 
@@ -37,8 +48,8 @@ export const App = (props: Props) => {
     }
     const theme = "light";
     console.log(correct);
-    const page = password !== "1" ?
-        <Diary password={password}/> :
+    const page = password !== "" ?
+        <Diary password={password} entries={entries}/> :
         <PasswordPrompt decryptErrorMsg={"Wrong password!"} decryptFile={checkPasswd}
                         decryptStatus={correct ? "right" : "error"}/>;
 

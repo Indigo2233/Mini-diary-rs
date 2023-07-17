@@ -68,7 +68,7 @@ export default class PasswordPrompt extends PureComponent<Props, State> {
     render(): ReactNode {
         const { decryptErrorMsg, decryptStatus } = this.props;
         const { isSubmitted, password } = this.state;
-        console.log(isSubmitted, decryptStatus);
+
         return (
             <StartPage>
                 <form className="password-prompt-form" onSubmit={this.onSubmit}>
