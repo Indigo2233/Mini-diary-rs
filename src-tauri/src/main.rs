@@ -11,10 +11,6 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-fn greet() {
-    println!("Hello! You've been greeted from Rust!")
-}
 
 static ENC_PASSWD_PATH: &str = ".encrypted-passwd.txt";
 static DIARY_PATH: &str = ".diary";
@@ -75,9 +71,13 @@ fn get_entries() -> Vec<(IndexDate, DiaryEntry)> {
 fn save_file(index_date: &str, content: &str) {
     let diary_path = Path::new(DIARY_PATH);
     if !diary_path.exists() {
-        std::fs::create_dir(diary_path).unwrap();
+        fs::create_dir(diary_path).unwrap();
     }
     let file_path = diary_path.join(format!("{}.txt", index_date));
+    if content.is_empty() && file_path.exists() {
+        fs::remove_file(file_path).unwrap();
+        return;
+    }
     let mut file = std::fs::File::create(file_path).unwrap();
     file.write(content.as_bytes()).unwrap();
 }
@@ -85,7 +85,6 @@ fn save_file(index_date: &str, content: &str) {
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            greet,
             test_file_exists,
             create_encrypted_file,
             check_passwd,

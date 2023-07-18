@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {memo, useEffect} from "react";
 import {DateFormatter, DayPicker} from "react-day-picker";
 import {format} from "date-fns";
 import "react-day-picker/dist/style.css";
@@ -10,7 +10,6 @@ export interface StateProps {
     // allowFutureEntries: boolean;
     dateSelected: Moment;
     // entries: Entries;
-    // firstDayOfWeek: Weekday | null;
 }
 
 export interface DispatchProps {
@@ -47,13 +46,11 @@ export const Calendar = (props: Props) => {
     const today = new Date();
     const tomorrow = new Date(today.setDate(today.getDate() + 1));
     const {setDateSelected} = props;
-    const [selected, setSelected] = React.useState<Date | undefined>(today);
+    const selected = props.dateSelected.toDate();
     const disabledDays = [
         {from: tomorrow, to: MAX_DATE.toDate()}
     ];
-    useEffect(() => {
-        setDateSelected(moment(selected));
-    }, [selected])
+
     const footer = selected ? (
         <p>You selected {format(selected, 'PPP')}.</p>
     ) : (
@@ -64,8 +61,8 @@ export const Calendar = (props: Props) => {
         <DayPicker
             mode="single"
             required
-            selected={selected}
-            onSelect={setSelected}
+            selected={props.dateSelected.toDate()}
+            onSelect={s =>  setDateSelected(moment(s))}
             footer={footer}
             showOutsideDays fixedWeeks
             formatters={{formatCaption}}
@@ -73,3 +70,4 @@ export const Calendar = (props: Props) => {
         />
     );
 }
+const MemoCalendar = memo(Calendar);

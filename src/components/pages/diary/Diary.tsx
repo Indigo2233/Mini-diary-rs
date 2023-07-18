@@ -20,7 +20,7 @@ export const Diary = (props: Props) => {
     }
     return (
         <div className="diary">
-            <Sidebar setDiaryDate={setDiaryDate}/>
+            <Sidebar entries={entries} setDiaryDate={setDiaryDate}/>
             <Editor entries={entries} dateSelected={date} enableSpellcheck hideTitles/>
         </div>
     );

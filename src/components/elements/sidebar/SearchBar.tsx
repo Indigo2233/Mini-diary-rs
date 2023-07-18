@@ -1,6 +1,6 @@
 import {XCircle, Clock} from "react-feather";
 import {Moment} from "moment-timezone";
-import React, {ChangeEvent, PureComponent, ReactNode, useEffect, useState} from "react";
+import React, {ChangeEvent, memo, PureComponent, ReactNode, useEffect, useState} from "react";
 
 
 import {createDate} from "../../../utils/dateFormat";
@@ -13,7 +13,7 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
-    search: (searchKey: string) => void;
+    search: () => void;
     setDateSelected: (date: Moment) => void;
 }
 
@@ -21,20 +21,18 @@ type Props = StateProps & DispatchProps;
 
 export const SearchBar = (props: Props) => {
     const {search, setDateSelected} = props;
+    const today = createDate();
+
     const [searchKey, setSearchKey] = useState("");
-    const {dateSelected} = props;
-
-    let isToday = dateSelected.isSame(dateSelected, "day");
+    const [isToday, setIsToday] = useState(props.dateSelected.isSame(today, "day"));
 
     useEffect(() => {
-        // console.log(dateSelected.toDate());
-        isToday = dateSelected.isSame(dateSelected, "day");
+        setIsToday(props.dateSelected.isSame(today, "day"));
     }, [props.dateSelected])
-    
-    useEffect(() => {
-        search(searchKey);
-    }, [searchKey])
-    // @ts-ignore
+    const returnToday = () => {
+        setIsToday(true);
+        setDateSelected(today);
+    }
     return (
         <div className="view-selector">
             <div className="search-input-wrapper">
@@ -62,7 +60,7 @@ export const SearchBar = (props: Props) => {
             <button
                 type="button"
                 className="button button-invisible button-today"
-                // onClick={onTodaySelection}
+                onClick={search}
                 title={"That year, this today."}
             >
                 <Clock {...iconProps} />
@@ -71,7 +69,9 @@ export const SearchBar = (props: Props) => {
                 type="button"
                 className="button button-invisible button-today"
                 disabled={isToday}
-                onClick={(e) => {setDateSelected(createDate())}}
+                onClick={(e) => {
+                    returnToday()
+                }}
                 title={"today"}
             >
                 <SkipForward {...iconProps} />
@@ -80,3 +80,4 @@ export const SearchBar = (props: Props) => {
     );
 }
 
+const MemoSearchBar = memo(SearchBar);
