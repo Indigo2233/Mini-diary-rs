@@ -7,6 +7,7 @@ use std::fs;
 use std::io::{Read, Write};
 use std::path::Path;
 use bcrypt::{hash, verify};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -46,16 +47,27 @@ type IndexDate = String;
 
 #[tauri::command]
 fn get_entries() -> Vec<(IndexDate, DiaryEntry)> {
+
+    let mut res = vec![];
     let diary_path = Path::new(DIARY_PATH);
     let paths = fs::read_dir(diary_path).unwrap();
     for path in paths {
-        println!("{}", path.unwrap().path().display());
+        let path = path.unwrap().path();
+        let index_date = path.file_name().unwrap().to_str().unwrap()[..10].to_string();
+        let meta = fs::metadata(path.clone()).unwrap();
+        let mtime = if let Ok(tm) = meta.modified() {
+            let date_time: DateTime<Utc> = tm.into();
+             date_time.format("%Y-%m-%d %T").to_string()
+        } else {
+            "".to_string()
+        };
+        let mut content = String::new();
+        fs::File::open(path.clone()).unwrap().read_to_string(&mut content).unwrap();
+        res.push((
+            index_date,
+            DiaryEntry(mtime, content)
+        ));
     }
-
-
-    let mut res = vec![];
-    res.push(("2023-07-15".to_string(),
-              DiaryEntry("2023-07-15".to_string(), "What a nice girl!".to_string())));
     res
 }
 

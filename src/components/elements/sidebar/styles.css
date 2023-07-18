@@ -11,5 +11,8 @@
 .rdp-day {
     margin-left: 2px;
     margin-right: 2px;
+}
 
+.rdp-booked {
+    font-size: 50px;
 }

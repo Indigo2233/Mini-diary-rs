@@ -4,6 +4,7 @@ import {format} from "date-fns";
 import "react-day-picker/dist/style.css";
 import "./styles.css"
 import moment, {Moment} from "moment-timezone";
+import {MAX_DATE} from "../../../constants";
 
 export interface StateProps {
     // allowFutureEntries: boolean;
@@ -44,9 +45,12 @@ const formatCaption: DateFormatter = (month, options) => {
 };
 export const Calendar = (props: Props) => {
     const today = new Date();
+    const tomorrow = new Date(today.setDate(today.getDate() + 1));
     const {setDateSelected} = props;
     const [selected, setSelected] = React.useState<Date | undefined>(today);
-
+    const disabledDays = [
+        {from: tomorrow, to: MAX_DATE.toDate()}
+    ];
     useEffect(() => {
         setDateSelected(moment(selected));
     }, [selected])
@@ -65,6 +69,7 @@ export const Calendar = (props: Props) => {
             footer={footer}
             showOutsideDays fixedWeeks
             formatters={{formatCaption}}
+            disabled={disabledDays}
         />
     );
 }

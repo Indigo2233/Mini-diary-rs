@@ -1,4 +1,4 @@
-import React, {createContext, useRef} from 'react';
+import React, {createContext, useEffect, useRef} from 'react';
 import "./App.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import {format} from 'date-fns';
@@ -40,6 +40,23 @@ export const App = (_props: Props) => {
             setEntries(entries);
         }
     }
+
+    // TODO: should delete the function call
+    useEffect(
+        () => {
+            const fetchEntries = async () => {
+                const ets: [[string, [string, string]]] = await invoke('get_entries');
+                for (let i = 0; i < ets.length; i++) {
+                    entries[ets[i][0]] = {
+                        dateUpdated: ets[i][1][0],
+                        text: ets[i][1][1]
+                    };
+                }
+            };
+            fetchEntries().then(_ => {
+            });
+        }
+    )
 
     const theme = "light";
     const page = password !== "1" ?
