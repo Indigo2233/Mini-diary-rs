@@ -14,19 +14,14 @@ export interface Props {
 export const Diary = (props: Props) => {
     const {password, entries} = props;
 
-    const [editorContent, setEditorContent] = useState(0);
     const [date, setDate] = useState(createDate());
-    const handleChildState = (content: string) => {
-        setEditorContent(content.length);
-    }
-    const setDiaryDate = (date: Moment) => {
-        setDate(date);
+    const setDiaryDate = (dt: Moment) => {
+        setDate(dt);
     }
     return (
         <div className="diary">
             <Sidebar setDiaryDate={setDiaryDate}/>
-            <div>{editorContent}</div>
-            <Editor entries={entries} dateSelected={date} enableSpellcheck hideTitles contentChange={handleChildState}/>
+            <Editor entries={entries} dateSelected={date} enableSpellcheck hideTitles/>
         </div>
     );
 };

@@ -20,8 +20,7 @@ async function testFileExists() {
     const exist = await invoke('test_file_exists');
 }
 
-export const App = (props: Props) => {
-    const [selected, setSelected] = React.useState<Date>();
+export const App = (_props: Props) => {
     const [password, setPassword] = React.useState("");
     const [correct, setCorrect] = React.useState(false);
     const [entries, setEntries] = React.useState<Entries>({});
@@ -42,13 +41,8 @@ export const App = (props: Props) => {
         }
     }
 
-    let footer = <p>Please pick a day.</p>;
-    if (selected) {
-        footer = <p>You picked {format(selected, 'PP')}.</p>;
-    }
     const theme = "light";
-    console.log(correct);
-    const page = password !== "" ?
+    const page = password !== "1" ?
         <Diary password={password} entries={entries}/> :
         <PasswordPrompt decryptErrorMsg={"Wrong password!"} decryptFile={checkPasswd}
                         decryptStatus={correct ? "right" : "error"}/>;

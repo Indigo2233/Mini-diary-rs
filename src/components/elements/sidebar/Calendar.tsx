@@ -46,9 +46,7 @@ export const Calendar = (props: Props) => {
     const today = new Date();
     const {setDateSelected} = props;
     const [selected, setSelected] = React.useState<Date | undefined>(today);
-    useEffect(() => {
-        setSelected(props.dateSelected.toDate());
-    }, [props.dateSelected])
+
     useEffect(() => {
         setDateSelected(moment(selected));
     }, [selected])

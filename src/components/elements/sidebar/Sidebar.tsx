@@ -25,8 +25,8 @@ export const Sidebar = (props: Props) => {
     const search = (key: string) => {
         setSearchKey(key);
     }
-    const setDateSelected = (date: Moment) => {
-        setDate(date);
+    const setDateSelected = (dt: Moment) => {
+        setDate(dt);
     }
     return (
         <div className="sidebar">

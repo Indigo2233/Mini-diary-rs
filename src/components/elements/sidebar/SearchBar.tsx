@@ -23,9 +23,14 @@ export const SearchBar = (props: Props) => {
     const {search, setDateSelected} = props;
     const [searchKey, setSearchKey] = useState("");
     const {dateSelected} = props;
-    const today = createDate();
-    const isToday = !dateSelected.isSame(today, "day");
 
+    let isToday = dateSelected.isSame(dateSelected, "day");
+
+    useEffect(() => {
+        // console.log(dateSelected.toDate());
+        isToday = dateSelected.isSame(dateSelected, "day");
+    }, [props.dateSelected])
+    
     useEffect(() => {
         search(searchKey);
     }, [searchKey])
