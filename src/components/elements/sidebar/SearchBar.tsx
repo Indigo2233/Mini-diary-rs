@@ -1,6 +1,6 @@
 import {XCircle, Clock} from "react-feather";
 import {Moment} from "moment-timezone";
-import React, {ChangeEvent, memo, PureComponent, ReactNode, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 
 import {createDate} from "../../../utils/dateFormat";
@@ -79,5 +79,3 @@ export const SearchBar = (props: Props) => {
         </div>
     );
 }
-
-const MemoSearchBar = memo(SearchBar);

@@ -1,12 +1,11 @@
 import React, {createContext, useEffect, useRef} from 'react';
 import "./App.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
-import {format} from 'date-fns';
 import 'react-day-picker/dist/style.css';
 import Diary from "./components/pages/diary/Diary";
 import PasswordPrompt from "./components/pages/start-page/PasswordPrompt";
 import {invoke} from "@tauri-apps/api/tauri";
-import {DiaryEntry, Entries, IndexDate} from "./types";
+import {Entries} from "./types";
 
 type Props = {}
 
@@ -41,25 +40,8 @@ export const App = (_props: Props) => {
         }
     }
 
-    // TODO: should delete the function call
-    useEffect(
-        () => {
-            const fetchEntries = async () => {
-                const ets: [[string, [string, string]]] = await invoke('get_entries');
-                for (let i = 0; i < ets.length; i++) {
-                    entries[ets[i][0]] = {
-                        dateUpdated: ets[i][1][0],
-                        text: ets[i][1][1]
-                    };
-                }
-            };
-            fetchEntries().then(_ => {
-            });
-        }
-    )
-
     const theme = "light";
-    const page = password !== "1" ?
+    const page = password !== "" ?
         <Diary password={password} entries={entries}/> :
         <PasswordPrompt decryptErrorMsg={"Wrong password!"} decryptFile={checkPasswd}
                         decryptStatus={correct ? "right" : "error"}/>;
@@ -74,6 +56,7 @@ export const App = (_props: Props) => {
                 </div>
             </div>
         </ThemeContext.Provider>
+
     )
 }
 // export default App;

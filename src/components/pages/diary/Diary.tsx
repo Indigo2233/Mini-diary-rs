@@ -1,9 +1,9 @@
-import React, {FunctionComponent, useState, useEffect} from 'react'
+import React, {useState} from 'react'
 
 import {Editor} from "../../elements/editor/Editor";
-import moment, {Moment} from "moment-timezone";
+import {Moment} from "moment-timezone";
 import {Sidebar} from "../../elements/sidebar/Sidebar";
-import {createDate, fromIndexDate} from "../../../utils/dateFormat";
+import {createDate} from "../../../utils/dateFormat";
 import {Entries} from "../../../types";
 
 export interface Props {

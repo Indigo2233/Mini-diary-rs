@@ -12,7 +12,6 @@ import "./styles.css"
 import {Entries} from "../../../types";
 import {invoke} from "@tauri-apps/api/tauri";
 
-const AUTOSAVE_INTERVAL = 500;
 
 export interface StateProps {
     enableSpellcheck: boolean;
@@ -93,7 +92,6 @@ export const Editor = (props: Props) => {
                     Promise.resolve(converter.makeHtml(markdown))
                 }
             />
-            <div>{value}</div>
         </div>
     );
 }

@@ -1,14 +1,11 @@
-import React, {memo, PureComponent, ReactNode, useState} from "react";
+import React, {useState} from "react";
 
 import {Calendar} from "./Calendar";
 import {SearchBar} from "./SearchBar";
-import {createDate, toIndexDate} from "../../../utils/dateFormat";
+import {createDate, fromIndexDate, toIndexDate} from "../../../utils/dateFormat";
 import {SearchResults} from "./SearchResults";
-import moment, {Moment} from "moment-timezone";
+import {Moment} from "moment-timezone";
 import {Entries} from "../../../types";
-// import SearchBarContainer from "../search-bar/SearchBarContainer";
-// import SearchResultsContainer from "../search-results/SearchResultsContainer";
-
 
 export interface StateProps {
     entries: Entries
@@ -49,10 +46,19 @@ export const Sidebar = (props: Props) => {
         setDiaryDate(date);
     }
 
+    const recordedDays: Date[] = [];
+    for (const keys in entries) {
+        if (entries[keys].text.length > 0 && keys !== toIndexDate(date)) {
+            recordedDays.push(fromIndexDate(keys).toDate());
+            console.log(1234);
+        }
+    }
+
+    console.log(entries, 1234);
     return (
         <div className="sidebar">
             <SearchBar dateSelected={date} search={searchSD} setDateSelected={setDD}/>
-            {!SSD ? <Calendar setDateSelected={setDD} dateSelected={date}/> :
+            {!SSD ? <Calendar setDateSelected={setDD} dateSelected={date} recordedDays={recordedDays}/> :
                 <SearchResults entries={entries} dateSelected={date} setDateSelected={setDD}
                                searchResults={searchRes}/>}
         </div>

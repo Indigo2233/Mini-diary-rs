@@ -1,5 +1,5 @@
-import React, {memo, useEffect} from "react";
-import {DateFormatter, DayPicker} from "react-day-picker";
+import React from "react";
+import {DateFormatter, DayClickEventHandler, DayPicker} from "react-day-picker";
 import {format} from "date-fns";
 import "react-day-picker/dist/style.css";
 import "./styles.css"
@@ -7,9 +7,8 @@ import moment, {Moment} from "moment-timezone";
 import {MAX_DATE} from "../../../constants";
 
 export interface StateProps {
-    // allowFutureEntries: boolean;
     dateSelected: Moment;
-    // entries: Entries;
+    recordedDays: Date[];
 }
 
 export interface DispatchProps {
@@ -42,32 +41,29 @@ const formatCaption: DateFormatter = (month, options) => {
         </>
     );
 };
+
+const bookedStyle = { color: '#006abb', fontWeight: "bold"};
+const selectedStyle = {color: '#F3F3F3', backgroundColor: '#006abb'};
 export const Calendar = (props: Props) => {
     const today = new Date();
     const tomorrow = new Date(today.setDate(today.getDate() + 1));
-    const {setDateSelected} = props;
+    const {setDateSelected, recordedDays} = props;
     const selected = props.dateSelected.toDate();
     const disabledDays = [
         {from: tomorrow, to: MAX_DATE.toDate()}
     ];
 
-    const footer = selected ? (
-        <p>You selected {format(selected, 'PPP')}.</p>
-    ) : (
-        <p>Please pick a day.</p>
-    );
-
     return (
         <DayPicker
             mode="single"
             required
-            selected={props.dateSelected.toDate()}
+            selected={selected}
             onSelect={s =>  setDateSelected(moment(s))}
-            footer={footer}
+            modifiers={{ booked: recordedDays }}
+            modifiersStyles={{ booked: bookedStyle, selected:  selectedStyle}}
             showOutsideDays fixedWeeks
             formatters={{formatCaption}}
             disabled={disabledDays}
         />
     );
 }
-const MemoCalendar = memo(Calendar);
