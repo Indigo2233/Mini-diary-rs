@@ -1,10 +1,10 @@
 import React from "react";
-import {DateFormatter, DayClickEventHandler, DayPicker} from "react-day-picker";
+import {DateFormatter, DayPicker} from "react-day-picker";
 import {format} from "date-fns";
 import "react-day-picker/dist/style.css";
-import "./styles.css"
 import moment, {Moment} from "moment-timezone";
 import {MAX_DATE} from "../../../constants";
+import "./styles.css"
 
 export interface StateProps {
     dateSelected: Moment;
@@ -37,12 +37,12 @@ const formatCaption: DateFormatter = (month, options) => {
       <span role="img" aria-label={season}>
         {seasonEmoji[season]}
       </span>{' '}
-            {format(month, 'LLLL', {locale: options?.locale})}
+            {format(month, 'LLLL yyyy', {locale: options?.locale})}
         </>
     );
 };
 
-const bookedStyle = { color: '#006abb', fontWeight: "bold"};
+const bookedStyle = {color: '#006abb', fontWeight: "bold"};
 const selectedStyle = {color: '#F3F3F3', backgroundColor: '#006abb'};
 export const Calendar = (props: Props) => {
     const today = new Date();
@@ -58,9 +58,9 @@ export const Calendar = (props: Props) => {
             mode="single"
             required
             selected={selected}
-            onSelect={s =>  setDateSelected(moment(s))}
-            modifiers={{ booked: recordedDays }}
-            modifiersStyles={{ booked: bookedStyle, selected:  selectedStyle}}
+            onSelect={s => setDateSelected(moment(s))}
+            modifiers={{booked: recordedDays}}
+            modifiersStyles={{booked: bookedStyle, selected: selectedStyle}}
             showOutsideDays fixedWeeks
             formatters={{formatCaption}}
             disabled={disabledDays}

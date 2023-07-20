@@ -8,6 +8,7 @@ use std::io::{Read, Write};
 use std::path::Path;
 use bcrypt::{hash, verify};
 use chrono::{DateTime, Utc};
+use magic_crypt::{MagicCryptTrait, new_magic_crypt};
 use serde::{Deserialize, Serialize};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -17,7 +18,8 @@ static DIARY_PATH: &str = ".diary";
 
 #[tauri::command(rename_all = "snake_case")]
 fn create_encrypted_file(password: String) {
-    let encrypted_passwd = hash(password, 20).unwrap();
+    println!("{}", password);
+    let encrypted_passwd = hash(password, 12).unwrap();
     let mut f = std::fs::File::create(ENC_PASSWD_PATH).unwrap();
     f.write(encrypted_passwd.as_bytes()).unwrap();
     println!("Encrypted file created!");
@@ -30,7 +32,7 @@ fn test_file_exists() -> bool {
 
 #[tauri::command(rename_all = "snake_case")]
 fn check_passwd(password: &str) -> bool {
-    let mut f = std::fs::File::open(ENC_PASSWD_PATH).unwrap();
+    let mut f = fs::File::open(ENC_PASSWD_PATH).unwrap();
     let mut saved_passwd = String::new();
     f.read_to_string(&mut saved_passwd).unwrap();
     verify(password, &saved_passwd).unwrap()
@@ -42,8 +44,7 @@ struct DiaryEntry(String, String);
 type IndexDate = String;
 
 #[tauri::command]
-fn get_entries() -> Vec<(IndexDate, DiaryEntry)> {
-
+fn get_entries(passwd: &str) -> Vec<(IndexDate, DiaryEntry)> {
     let mut res = vec![];
     let diary_path = Path::new(DIARY_PATH);
     let paths = fs::read_dir(diary_path).unwrap();
@@ -53,12 +54,15 @@ fn get_entries() -> Vec<(IndexDate, DiaryEntry)> {
         let meta = fs::metadata(path.clone()).unwrap();
         let mtime = if let Ok(tm) = meta.modified() {
             let date_time: DateTime<Utc> = tm.into();
-             date_time.format("%Y-%m-%d %T").to_string()
+            date_time.format("%Y-%m-%d %T").to_string()
         } else {
             "".to_string()
         };
-        let mut content = String::new();
-        fs::File::open(path.clone()).unwrap().read_to_string(&mut content).unwrap();
+        let mut encrypted_content = String::new();
+        fs::File::open(path.clone()).unwrap().read_to_string(&mut encrypted_content).unwrap();
+        let mc = new_magic_crypt!(passwd, 256);
+        let content = mc.decrypt_base64_to_string(&encrypted_content).unwrap();
+
         res.push((
             index_date,
             DiaryEntry(mtime, content)
@@ -68,7 +72,7 @@ fn get_entries() -> Vec<(IndexDate, DiaryEntry)> {
 }
 
 #[tauri::command(rename_all = "snake_case")]
-fn save_file(index_date: &str, content: &str) {
+fn save_file(index_date: &str, content: &str, passwd: &str) {
     let diary_path = Path::new(DIARY_PATH);
     if !diary_path.exists() {
         fs::create_dir(diary_path).unwrap();
@@ -78,8 +82,10 @@ fn save_file(index_date: &str, content: &str) {
         fs::remove_file(file_path).unwrap();
         return;
     }
-    let mut file = std::fs::File::create(file_path).unwrap();
-    file.write(content.as_bytes()).unwrap();
+    let mc = new_magic_crypt!(passwd, 256);
+    let encrypted_content = mc.encrypt_bytes_to_base64(content);
+    let mut file = fs::File::create(file_path).unwrap();
+    file.write(encrypted_content.as_bytes()).unwrap();
 }
 
 fn main() {

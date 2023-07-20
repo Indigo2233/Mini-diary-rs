@@ -7,12 +7,12 @@ import {createDate} from "../../../utils/dateFormat";
 import {Entries} from "../../../types";
 
 export interface Props {
-    password: string
+    passwd: string
     entries: Entries;
 }
 
 export const Diary = (props: Props) => {
-    const {password, entries} = props;
+    const {passwd, entries} = props;
 
     const [date, setDate] = useState(createDate());
     const setDiaryDate = (dt: Moment) => {
@@ -21,7 +21,7 @@ export const Diary = (props: Props) => {
     return (
         <div className="diary">
             <Sidebar entries={entries} setDiaryDate={setDiaryDate}/>
-            <Editor entries={entries} dateSelected={date} enableSpellcheck hideTitles/>
+            <Editor entries={entries} dateSelected={date} enableSpellcheck hideTitles passwd={passwd}/>
         </div>
     );
 };

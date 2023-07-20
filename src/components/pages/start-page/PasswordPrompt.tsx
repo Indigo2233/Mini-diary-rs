@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, PureComponent, ReactNode } from "react";
+import React, {ChangeEvent, FormEvent, PureComponent, ReactNode} from "react";
 
 import Banner from "../../elements/general/Banner";
 import StartPage from "./StartPage";
@@ -9,7 +9,7 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
-    decryptFile:  (password: string) => Promise<void>;
+    decryptFile: (password: string) => Promise<void>;
 }
 
 type Props = StateProps & DispatchProps;
@@ -61,13 +61,14 @@ export default class PasswordPrompt extends PureComponent<Props, State> {
             isSubmitted: true,
         });
         // Select entered password if it is incorrect
-        // @ts-ignore
-        this.input.select();
+        if (this.input) {
+            this.input.select();
+        }
     }
 
     render(): ReactNode {
-        const { decryptErrorMsg, decryptStatus } = this.props;
-        const { isSubmitted, password } = this.state;
+        const {decryptErrorMsg, decryptStatus} = this.props;
+        const {isSubmitted, password} = this.state;
 
         return (
             <StartPage>
@@ -89,7 +90,7 @@ export default class PasswordPrompt extends PureComponent<Props, State> {
                 </form>
                 <div className="password-prompt-banner">
                     {isSubmitted && decryptStatus === "error" && (
-                        <Banner bannerType="error" message={decryptErrorMsg} />
+                        <Banner bannerType="error" message={decryptErrorMsg}/>
                     )}
                 </div>
             </StartPage>

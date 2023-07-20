@@ -18,6 +18,7 @@ export interface StateProps {
     hideTitles: boolean;
     dateSelected: Moment;
     entries: Entries;
+    passwd: string;
 }
 
 export interface DispatchProps {
@@ -38,12 +39,12 @@ const converter = new Showdown.Converter({
     tasklists: true
 });
 
-const saveEntry = async (entries: Entries, idxDate: string)  => {
-    await invoke('save_file', {index_date: idxDate, content: entries[idxDate]['text']})
+const saveEntry = async (entries: Entries, idxDate: string, passwd: string) => {
+    await invoke('save_file', {index_date: idxDate, content: entries[idxDate]['text'], passwd: passwd})
 }
 
 export const Editor = (props: Props) => {
-    const {dateSelected, entries} = props;
+    const {dateSelected, entries, passwd} = props;
     const et = entries[toIndexDate(dateSelected)];
     const today = toDateString(createDate());
     const [date, setDate] = useState(dateSelected);
@@ -52,8 +53,9 @@ export const Editor = (props: Props) => {
     const handleKeyDown = (event: React.KeyboardEvent) => {
         if (event.key === "s" && (event.ctrlKey || event.metaKey)) {
             // do some saving
-            if (entries.hasOwnProperty(toIndexDate(date))){
-                saveEntry(entries, toIndexDate(date)).then(_ => {});
+            if (entries.hasOwnProperty(toIndexDate(date))) {
+                saveEntry(entries, toIndexDate(date), passwd).then(_ => {
+                },);
             }
             event.preventDefault();
             // remove test log when api called
@@ -62,8 +64,9 @@ export const Editor = (props: Props) => {
     };
 
     useEffect(() => {
-        if (entries.hasOwnProperty(toIndexDate(date))){
-            saveEntry(entries, toIndexDate(date)).then(_ => {});
+        if (entries.hasOwnProperty(toIndexDate(date))) {
+            saveEntry(entries, toIndexDate(date), passwd).then(_ => {
+            });
         }
         const et = entries[toIndexDate(dateSelected)];
         setValue(et ? et.text : "");

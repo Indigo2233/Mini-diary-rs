@@ -5,7 +5,6 @@ import StartPage from "./StartPage";
 
 export interface DispatchProps {
     createEncryptedFile: (password: string) => void;
-    testFileExists: () => void;
 }
 
 type Props = DispatchProps;
@@ -48,12 +47,11 @@ export default class PasswordCreation extends PureComponent<Props, State> {
 
     onSubmit(e: FormEvent): void {
         e.preventDefault();
-        const {createEncryptedFile, testFileExists} = this.props;
+        const {createEncryptedFile} = this.props;
         const {password1, password2} = this.state;
 
         if (password1 === password2) {
             createEncryptedFile(password1);
-            testFileExists();
         } else {
             throw Error("passwords-no-match");
         }
