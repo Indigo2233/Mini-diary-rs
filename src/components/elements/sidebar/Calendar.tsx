@@ -57,6 +57,7 @@ export const Calendar = (props: Props) => {
         <DayPicker
             mode="single"
             required
+            ISOWeek
             selected={selected}
             onSelect={s => setDateSelected(moment(s))}
             modifiers={{booked: recordedDays}}
