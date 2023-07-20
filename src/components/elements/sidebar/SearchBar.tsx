@@ -14,13 +14,14 @@ export interface StateProps {
 
 export interface DispatchProps {
     search: () => void;
+    setSK: (sk: string) => void;
     setDateSelected: (date: Moment) => void;
 }
 
 type Props = StateProps & DispatchProps;
 
 export const SearchBar = (props: Props) => {
-    const {search, setDateSelected} = props;
+    const {search, setDateSelected, setSK} = props;
     const today = createDate();
 
     const [searchKey, setSearchKey] = useState("");
@@ -42,14 +43,20 @@ export const SearchBar = (props: Props) => {
                     placeholder={"search…"}
                     spellCheck={false}
                     value={searchKey}
-                    onChange={(e) => (setSearchKey(e.target.value))}
+                    onChange={(e) => {
+                        setSearchKey(e.target.value);
+                        setSK(e.target.value);
+                    }}
                 />
                 {searchKey !== "" && (
                     <span className="search-input-clear">
 							<button
                                 type="button"
                                 className="button button-invisible"
-                                onClick={() => setSearchKey("")}
+                                onClick={() => {
+                                    setSearchKey("");
+                                    setSK("");
+                                }}
                                 title={"clear"}
                             >
 								<XCircle {...iconProps} />
@@ -61,6 +68,7 @@ export const SearchBar = (props: Props) => {
                 type="button"
                 className="button button-invisible button-today"
                 onClick={search}
+                disabled={searchKey !== ""}
                 title={"That year, this today."}
             >
                 <Clock {...iconProps} />

@@ -21,7 +21,7 @@ type Props = StateProps & DispatchProps;
 export const Sidebar = (props: Props) => {
     const {setDiaryDate, entries} = props;
     const [date, setDate] = useState(createDate());
-    // const [searchKey, setSearchKey] = useState("")
+    const [searchKey, setSearchKey] = useState("")
     const [SSD, setSSD] = useState(false);
     const [searchRes, setSearchRes] = useState<string[]>([]);
     const searchSD = () => {
@@ -29,17 +29,30 @@ export const Sidebar = (props: Props) => {
             const res: string[] = [];
             const d = toIndexDate(date).slice(5);
             for (const entriesKey in entries) {
-                console.log(entriesKey);
                 if (entriesKey.slice(5) === d) {
                     res.push(entriesKey);
                 }
             }
-            console.log(res)
             setSearchRes(res);
         } else {
             setSearchRes([]);
         }
         setSSD(prevState => !prevState);
+    }
+    const searchSK = (sk: string) => {
+        setSearchKey(sk);
+        if (sk !== "") {
+            const res: string[] = [];
+            for (const entriesKey in entries) {
+                if (entries[entriesKey].text.search(sk) !== -1) {
+                    res.push(entriesKey);
+                }
+            }
+            setSearchRes(res);
+        } else {
+            setSSD(false);
+            setSearchRes([]);
+        }
     }
     const setDD = (date: Moment) => {
         setDate(date);
@@ -50,15 +63,14 @@ export const Sidebar = (props: Props) => {
     for (const keys in entries) {
         if (entries[keys].text.length > 0 && keys !== toIndexDate(date)) {
             recordedDays.push(fromIndexDate(keys).toDate());
-            console.log(1234);
         }
     }
 
-    console.log(entries, 1234);
     return (
         <div className="sidebar">
-            <SearchBar dateSelected={date} search={searchSD} setDateSelected={setDD}/>
-            {!SSD ? <Calendar setDateSelected={setDD} dateSelected={date} recordedDays={recordedDays}/> :
+            <SearchBar dateSelected={date} search={searchSD} setDateSelected={setDD} setSK={searchSK}/>
+            {!SSD && searchKey === "" ?
+                <Calendar setDateSelected={setDD} dateSelected={date} recordedDays={recordedDays}/> :
                 <SearchResults entries={entries} dateSelected={date} setDateSelected={setDD}
                                searchResults={searchRes}/>}
         </div>
