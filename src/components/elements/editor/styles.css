@@ -1,5 +1,9 @@
 .react-mde {
-    height: 90%;
+    width: 95%;
     background-color: #f6f6f6;
     font-size: 17px;
+}
+
+.mde-text {
+    height: 640px !important;
 }
