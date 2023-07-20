@@ -16,3 +16,6 @@
 .rdp-booked {
     font-size: 50px;
 }
+.rdp-day_today:not(.rdp-day_outside) {
+    border-color: #006abb;
+}

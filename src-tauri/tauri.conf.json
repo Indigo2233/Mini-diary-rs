@@ -66,10 +66,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 700,
+        "height": 960,
         "resizable": true,
         "title": "mini-diary",
-        "width": 1400,
+        "width": 1680,
         "minWidth": 1400,
         "minHeight": 700
       }
